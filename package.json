@@ -1,0 +1,23 @@
+{
+  "name": "dns-records",
+  "version": "1.0.0",
+  "description": "Get All the DNS Records associated with a domain",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vigneshshanmugam/dns-records.git"
+  },
+  "keywords": [
+    "DNS",
+    "Records"
+  ],
+  "author": "Vignesh Shanmugam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vigneshshanmugam/dns-records/issues"
+  },
+  "homepage": "https://github.com/vigneshshanmugam/dns-records"
+}
