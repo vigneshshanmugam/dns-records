@@ -19,5 +19,16 @@
   "bugs": {
     "url": "https://github.com/vigneshshanmugam/dns-records/issues"
   },
-  "homepage": "https://github.com/vigneshshanmugam/dns-records"
+  "homepage": "https://github.com/vigneshshanmugam/dns-records",
+  "dependencies": {
+    "babel-core": "^4.7.13",
+    "babel-loader": "^4.2.0",
+    "babel-runtime": "^4.7.13",
+    "co": "^4.4.0",
+    "koa": "^0.18.1",
+    "koa-logger": "^1.2.2",
+    "koa-route": "^2.4.0",
+    "koa-static": "^1.4.9",
+    "webpack": "^1.7.3"
+  }
 }
