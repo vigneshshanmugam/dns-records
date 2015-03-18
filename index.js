@@ -3,15 +3,17 @@ var getResult = require('./src/GetRequest'),
 	endpoint = "/getDNSRecords?name=",
 	layout = require('./src/Layout'),
 	result = document.querySelectorAll('.result')[0],
-	table = document.querySelectorAll('.record-table tbody')[0];
+	tBody = document.querySelectorAll('.record-table tbody')[0];
 
 function handleResponse(response){
-	var record, i;
+	var record, i,
+		table = document.querySelectorAll('.record-table')[0];
 	if(response.length>0){
 		for(i=0; i<response.length; i++){
 			record = response[i];
-			layout(table, record, i);
+			layout(tBody, record, i);
 		}
+		table.className = 'record-table';
 	}	
 }
 
