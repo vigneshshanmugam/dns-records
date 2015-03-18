@@ -14,8 +14,11 @@ module.exports = function(url) {
 					reject(xhr.responseText);
 				}
 			}
-		}
+		};
+		xhr.onerror = function() {
+	      reject(Error("Error fetching data.")); // error occurred, so reject the Promise
+	    };
 		xhr.open('GET', url, true);
 		xhr.send();
 	});
-}
+};

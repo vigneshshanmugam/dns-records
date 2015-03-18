@@ -4,7 +4,8 @@ var koa = require('koa'),
 	route = require('koa-route'),
 	staticDir = require('koa-static'),
 	port = process.env.PORT || 3000,
-	dns = require('dns');
+	dns = require('dns'),
+	dnsRecords = {},domain='';
 
 app.use(logger());
 
@@ -18,32 +19,47 @@ app.listen(port, function() {
 function *getDNSRecords() {
 	domain = this.request.query.name;
 	if(domain){
-		var resp = getARecord(domain).then(getNsRecord(domain));
-		console.log(resp);
+		var resp = Promise.all([getARecord(),getNsRecord(),getCNAME()]).then(function(respObj){
+			console.log('Response' + JSON.stringify(respObj));
+			return respObj;
+		}).catch(function(err){
+			console.log('Error' + err);
+			return err;
+		});
 		this.body = resp;
 	}
 }
 
-function sendResponse(resp){
-	return resp;
-}
-
-function getARecord(domain){
-	var a = new Promise(function(resolve, reject) {
-		dns.resolve(domain, 'A', function(err, address) {
+function getARecord(){
+	 return new Promise(function(resolve, reject) {
+		dns.resolve4(domain,function(err, address) {
 			if(err) reject(err);
-			else resolve(address);
+			dnsRecords.A = address;
+			resolve(dnsRecords);
 		});
 	});
-	return a;
 }
 
-function getNsRecord(domain){
-	var b = new Promise(function(request,response){
+function getNsRecord(){
+	return new Promise(function(resolve,reject){
 		dns.resolveNs(domain,function(err,record){
 			if(err) reject(err);
-			else resolve(address);
+			dnsRecords.NS = record;
+			resolve(dnsRecords);
 		});
 	});
-	return b;
+}
+
+function getCNAME(){
+	return new Promise(function(resolve,reject){
+		dns.resolveCname(domain,function(err,record){
+			if(err.code ==='ENODATA'){
+				dnsRecords.CNAME = '';
+				resolve(dnsRecords);
+			}
+			if(err) reject(err);
+			dnsRecords.CNAME = record;
+			resolve(record);
+		});
+	});
 }

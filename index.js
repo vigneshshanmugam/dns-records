@@ -5,13 +5,12 @@ var getResult = require('./src/GetRequest'),
 
 function handleResponse(response){
 	var records;
-
-	if(response.length>0){
-		for(i=0; i<response.length; i++){
-			record = response[i];
-			//TODO
-		}
-	}	
+	//TODO
+	// if(response.length>0){
+	// 	for(i=0; i<response.length; i++){
+	// 		record = response[i];
+	// 	}
+	// }	
 }
 
 function createLayout(){

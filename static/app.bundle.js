@@ -55,23 +55,16 @@
 
 	function handleResponse(response) {
 		var records;
-
-		if (response.length > 0) {
-			for (i = 0; i < response.length; i++) {
-				record = response[i];
-			}
-		}
-
-		// if(response.length > 0){
-		// 	cdn = findCDN(response);
-		// 	if(cdn){
-		// 		result.style.color = 'green';
-		// 		result.innerHTML = cdn;
-		// 	}else{
-		// 		handleError();
+		console.log(response);
+		// if(response.length>0){
+		// 	for(i=0; i<response.length; i++){
+		// 		record = response[i];
+		// 		//TODO
 		// 	}
-		// }
+		// }	
 	}
+
+	function createLayout() {}
 
 	function handleError(err) {
 		result.style.color = "red";
@@ -134,11 +127,15 @@
 			xhr.onreadystatechange = function () {
 				if (xhr.readyState == 4) {
 					if (xhr.status === 200) {
+						debugger;
 						resolve(JSON.parse(xhr.responseText));
 					} else {
 						reject(xhr.responseText);
 					}
 				}
+			};
+			xhr.onerror = function () {
+				reject(Error("Error fetching data.")); // error occurred, so reject the Promise
 			};
 			xhr.open("GET", url, true);
 			xhr.send();
