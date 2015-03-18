@@ -10,6 +10,10 @@ body{
 	padding: 0;
 }
 
+table th, table td{
+	padding: 10px;
+}
+
 .hide{
 	display: none;
 }
@@ -48,11 +52,19 @@ header h2{
 }
 
 .layout table{
-	
+	width: 100%;
+	overflow: hidden;
+	table-layout: fixed;
+	white-space: nowrap;
+	border-collapse: collapse;
 }
 
-.layout table tr{
-	width: 300px;
+.layout table .record-id{
+	width: 20%;
+}
+
+.layout table .record-addr{
+	width: 80%;
 }
 
 	
