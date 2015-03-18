@@ -19,33 +19,29 @@ app.listen(port, function() {
 function *getDNSRecords() {
 	domain = this.request.query.name;
 	if(domain){
-		var resp = Promise.all([getARecord(),getNsRecord(),getCNAME()]).then(function(respObj){
-			console.log('Response' + JSON.stringify(respObj));
-			return respObj;
-		}).catch(function(err){
-			console.log('Error' + err);
-			return err;
-		});
-		this.body = resp;
+		var response = yield Promise.all([getARecord(),getAAAARecord(),getCNAME(),
+			getNsRecord(),getMxRecord(),getSrvRecord, getSOARecord()]).then(function(resp){
+			var result = [].slice.call(resp);
+			return result;
+		}).catch(function(err){return err;});
+		this.body = response;
 	}
 }
 
 function getARecord(){
 	 return new Promise(function(resolve, reject) {
 		dns.resolve4(domain,function(err, address) {
-			if(err) reject(err);
-			dnsRecords.A = address;
-			resolve(dnsRecords);
+			handleError(err,resolve,reject);
+			resolve(address);
 		});
 	});
 }
 
-function getNsRecord(){
-	return new Promise(function(resolve,reject){
-		dns.resolveNs(domain,function(err,record){
-			if(err) reject(err);
-			dnsRecords.NS = record;
-			resolve(dnsRecords);
+function getAAAARecord(){
+	 return new Promise(function(resolve, reject) {
+		dns.resolve6(domain,function(err, address) {
+			handleError(err,resolve,reject);
+			resolve(address);
 		});
 	});
 }
@@ -53,13 +49,51 @@ function getNsRecord(){
 function getCNAME(){
 	return new Promise(function(resolve,reject){
 		dns.resolveCname(domain,function(err,record){
-			if(err.code ==='ENODATA'){
-				dnsRecords.CNAME = '';
-				resolve(dnsRecords);
-			}
-			if(err) reject(err);
-			dnsRecords.CNAME = record;
+			handleError(err,resolve,reject);
 			resolve(record);
 		});
 	});
+}
+
+function getMxRecord(){
+	 return new Promise(function(resolve, reject) {
+		dns.resolveMx(domain,function(err, record) {
+			handleError(err,resolve,reject);
+			resolve(record);
+		});
+	});
+}
+
+function getNsRecord(){
+	return new Promise(function(resolve,reject){
+		dns.resolveNs(domain,function(err,record){
+			handleError(err,resolve,reject);
+			resolve(record);
+		});
+	});
+}
+
+function getSrvRecord(){
+	 return new Promise(function(resolve, reject) {
+		dns.resolveSrv(domain,function(err, record) {
+			handleError(err,resolve,reject);
+			resolve(record);
+		});
+	});
+}
+
+function getSOARecord(){
+	 return new Promise(function(resolve, reject) {
+		dns.resolveSoa(domain,function(err, address) {
+			handleError(err,resolve,reject);
+			resolve(address);
+		});
+	});
+}
+
+function handleError(err,resolve,reject){
+	if(err) {
+		if(err.code === 'ENODATA'){resolve(null);}
+		reject(err);
+	}
 }

@@ -49,22 +49,21 @@
 	var _regeneratorRuntime = __webpack_require__(3)["default"];
 
 	var getResult = __webpack_require__(1),
-	    co = __webpack_require__(2),
+	    co = __webpack_require__(4),
 	    endpoint = "/getDNSRecords?name=",
-	    result = document.querySelectorAll(".result")[0];
+	    layout = __webpack_require__(2),
+	    result = document.querySelectorAll(".result")[0],
+	    table = document.querySelectorAll(".record-table tbody")[0];
 
 	function handleResponse(response) {
-		var records;
-		console.log(response);
-		// if(response.length>0){
-		// 	for(i=0; i<response.length; i++){
-		// 		record = response[i];
-		// 		//TODO
-		// 	}
-		// }	
+		var record, i;
+		if (response.length > 0) {
+			for (i = 0; i < response.length; i++) {
+				record = response[i];
+				layout(table, record, i);
+			}
+		}
 	}
-
-	function createLayout() {}
 
 	function handleError(err) {
 		result.style.color = "red";
@@ -114,7 +113,7 @@
 
 	"use strict";
 
-	var _core = __webpack_require__(4)["default"];
+	var _core = __webpack_require__(5)["default"];
 
 	module.exports = function (url) {
 		return new _core.Promise(function (resolve, reject) {
@@ -127,7 +126,6 @@
 			xhr.onreadystatechange = function () {
 				if (xhr.readyState == 4) {
 					if (xhr.status === 200) {
-						debugger;
 						resolve(JSON.parse(xhr.responseText));
 					} else {
 						reject(xhr.responseText);
@@ -144,6 +142,51 @@
 
 /***/ },
 /* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var RECORD_NAMES = ["IPv4", "IPv6", "Canonical Name", "Name Servers", "Mail Exchange", "Service", "Start of authority"];
+
+	module.exports = function (table, record, recordNo) {
+		var row = table.insertRow();
+		var col1 = row.insertCell();
+		var col2 = row.insertCell();
+		col1.innerHTML = RECORD_NAMES[recordNo];
+		col2.innerHTML = record;
+	};
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {// This method of obtaining a reference to the global object needs to be
+	// kept identical to the way it is obtained in runtime.js
+	var g =
+	  typeof global === "object" ? global :
+	  typeof window === "object" ? window : this;
+
+	var hasOwn = Object.prototype.hasOwnProperty;
+	var hadRuntime = hasOwn.call(g, "regeneratorRuntime");
+	var oldRuntime = hadRuntime && g.regeneratorRuntime;
+	delete g.regeneratorRuntime; // Force reevalutation of runtime.js.
+
+	module.exports = __webpack_require__(6);
+
+	if (hadRuntime) {
+	  // Restore the original runtime.
+	  g.regeneratorRuntime = oldRuntime;
+	} else {
+	  // Remove the global property added by runtime.js.
+	  delete g.regeneratorRuntime;
+	}
+
+	module.exports = { "default": module.exports, __esModule: true };
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -382,36 +425,7 @@
 
 
 /***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {// This method of obtaining a reference to the global object needs to be
-	// kept identical to the way it is obtained in runtime.js
-	var g =
-	  typeof global === "object" ? global :
-	  typeof window === "object" ? window : this;
-
-	var hasOwn = Object.prototype.hasOwnProperty;
-	var hadRuntime = hasOwn.call(g, "regeneratorRuntime");
-	var oldRuntime = hadRuntime && g.regeneratorRuntime;
-	delete g.regeneratorRuntime; // Force reevalutation of runtime.js.
-
-	module.exports = __webpack_require__(5);
-
-	if (hadRuntime) {
-	  // Restore the original runtime.
-	  g.regeneratorRuntime = oldRuntime;
-	} else {
-	  // Remove the global property added by runtime.js.
-	  delete g.regeneratorRuntime;
-	}
-
-	module.exports = { "default": module.exports, __esModule: true };
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2757,7 +2771,7 @@
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -2772,7 +2786,7 @@
 
 	"use strict";
 
-	var _core = __webpack_require__(4)["default"];
+	var _core = __webpack_require__(5)["default"];
 
 	!(function (global) {
 	  "use strict";

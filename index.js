@@ -1,20 +1,18 @@
 var getResult = require('./src/GetRequest'),
 	co = require('co'),
 	endpoint = "/getDNSRecords?name=",
-	result = document.querySelectorAll('.result')[0];
+	layout = require('./src/Layout'),
+	result = document.querySelectorAll('.result')[0],
+	table = document.querySelectorAll('.record-table tbody')[0];
 
 function handleResponse(response){
-	var records;
-	//TODO
-	// if(response.length>0){
-	// 	for(i=0; i<response.length; i++){
-	// 		record = response[i];
-	// 	}
-	// }	
-}
-
-function createLayout(){
-	
+	var record, i;
+	if(response.length>0){
+		for(i=0; i<response.length; i++){
+			record = response[i];
+			layout(table, record, i);
+		}
+	}	
 }
 
 function handleError(err){
