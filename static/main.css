@@ -10,9 +10,7 @@ body{
 	padding: 0;
 }
 
-table th, table td{
-	padding: 10px;
-}
+
 
 .hide{
 	display: none;
@@ -59,12 +57,20 @@ header h2{
 	border-collapse: collapse;
 }
 
-.layout table .record-id{
+.record-table th, .record-table td{
+	padding: 10px;
+}
+
+.layout table .record-id, .layout table .sub-keys{
 	width: 20%;
 }
 
 .layout table .record-addr{
 	width: 80%;
+}
+
+.layout .sub-table td{
+	padding : 3px;
 }
 
 	

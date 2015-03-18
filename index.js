@@ -2,8 +2,7 @@ var getResult = require('./src/GetRequest'),
 	co = require('co'),
 	endpoint = "/getDNSRecords?name=",
 	layout = require('./src/Layout'),
-	result = document.querySelectorAll('.result')[0],
-	tBody = document.querySelectorAll('.record-table tbody')[0];
+	result = document.querySelectorAll('.result')[0];
 
 function handleResponse(response){
 	var record, i,
@@ -11,7 +10,7 @@ function handleResponse(response){
 	if(response.length>0){
 		for(i=0; i<response.length; i++){
 			record = response[i];
-			layout(tBody, record, i);
+			layout(table, record, i);
 		}
 		table.className = 'record-table';
 	}	

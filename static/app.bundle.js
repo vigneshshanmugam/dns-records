@@ -46,22 +46,24 @@
 
 	"use strict";
 
-	var _regeneratorRuntime = __webpack_require__(3)["default"];
+	var _regeneratorRuntime = __webpack_require__(4)["default"];
 
 	var getResult = __webpack_require__(1),
-	    co = __webpack_require__(4),
+	    co = __webpack_require__(3),
 	    endpoint = "/getDNSRecords?name=",
 	    layout = __webpack_require__(2),
-	    result = document.querySelectorAll(".result")[0],
-	    table = document.querySelectorAll(".record-table tbody")[0];
+	    result = document.querySelectorAll(".result")[0];
 
 	function handleResponse(response) {
-		var record, i;
+		var record,
+		    i,
+		    table = document.querySelectorAll(".record-table")[0];
 		if (response.length > 0) {
 			for (i = 0; i < response.length; i++) {
 				record = response[i];
 				layout(table, record, i);
 			}
+			table.className = "record-table";
 		}
 	}
 
@@ -148,45 +150,44 @@
 
 	var RECORD_NAMES = ["IPv4", "IPv6", "Canonical Name", "Name Servers", "Mail Exchange", "Service", "Start of authority"];
 
+	function createSubComponents(record, col) {
+		var subComp,
+		    keyName,
+		    valName,
+		    r,
+		    subTable = document.createElement("table");
+		for (r in record) {
+			if (record.hasOwnProperty(r)) {
+				subComp = subTable.insertRow();
+				keyName = subComp.insertCell();
+				keyName.innerHTML = r;
+				keyName.setAttribute("class", "sub-keys");
+				valName = subComp.insertCell();
+				valName.innerHTML = record[r];
+			}
+		}
+		subTable.className = "sub-table";
+		col.appendChild(subTable);
+	}
+
 	module.exports = function (table, record, recordNo) {
-		var row = table.insertRow();
-		var col1 = row.insertCell();
-		var col2 = row.insertCell();
+		var row = table.insertRow(),
+		    col1 = row.insertCell(),
+		    col2 = row.insertCell();
 		col1.innerHTML = RECORD_NAMES[recordNo];
-		col2.innerHTML = record;
+		if (record) {
+			if (Object.prototype.toString.call(record) === "[object Object]") {
+				createSubComponents(record, col2);
+			} else {
+				col2.innerHTML = record;
+			}
+		} else {
+			col2.innerHTML = "-";
+		}
 	};
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {// This method of obtaining a reference to the global object needs to be
-	// kept identical to the way it is obtained in runtime.js
-	var g =
-	  typeof global === "object" ? global :
-	  typeof window === "object" ? window : this;
-
-	var hasOwn = Object.prototype.hasOwnProperty;
-	var hadRuntime = hasOwn.call(g, "regeneratorRuntime");
-	var oldRuntime = hadRuntime && g.regeneratorRuntime;
-	delete g.regeneratorRuntime; // Force reevalutation of runtime.js.
-
-	module.exports = __webpack_require__(6);
-
-	if (hadRuntime) {
-	  // Restore the original runtime.
-	  g.regeneratorRuntime = oldRuntime;
-	} else {
-	  // Remove the global property added by runtime.js.
-	  delete g.regeneratorRuntime;
-	}
-
-	module.exports = { "default": module.exports, __esModule: true };
-
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -423,6 +424,35 @@
 	  return Object == val.constructor;
 	}
 
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {// This method of obtaining a reference to the global object needs to be
+	// kept identical to the way it is obtained in runtime.js
+	var g =
+	  typeof global === "object" ? global :
+	  typeof window === "object" ? window : this;
+
+	var hasOwn = Object.prototype.hasOwnProperty;
+	var hadRuntime = hasOwn.call(g, "regeneratorRuntime");
+	var oldRuntime = hadRuntime && g.regeneratorRuntime;
+	delete g.regeneratorRuntime; // Force reevalutation of runtime.js.
+
+	module.exports = __webpack_require__(6);
+
+	if (hadRuntime) {
+	  // Restore the original runtime.
+	  g.regeneratorRuntime = oldRuntime;
+	} else {
+	  // Remove the global property added by runtime.js.
+	  delete g.regeneratorRuntime;
+	}
+
+	module.exports = { "default": module.exports, __esModule: true };
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 5 */
