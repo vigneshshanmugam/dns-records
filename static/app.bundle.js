@@ -57,11 +57,13 @@
 	function handleResponse(response) {
 		var record,
 		    i,
-		    table = document.querySelectorAll(".record-table")[0];
+		    table = document.querySelectorAll(".record-table")[0],
+		    tBody = document.querySelectorAll(".record-table tbody")[0];
+		tBody.innerHTML = "";
 		if (response.length > 0) {
 			for (i = 0; i < response.length; i++) {
 				record = response[i];
-				layout(table, record, i);
+				layout(tBody, record, i);
 			}
 			table.className = "record-table";
 		}
@@ -93,7 +95,7 @@
 				while (1) switch (context$2$0.prev = context$2$0.next) {
 					case 0:
 						domainName = document.querySelectorAll(".domain")[0].value;
-						name = endpoint + domainName.replace(/.*?:\/\//g, "");
+						name = endpoint + domainName.replace(/(.*?:\/\/)?(www.)?/g, "");
 						context$2$0.next = 4;
 						return getResult(name);
 

@@ -6,11 +6,13 @@ var getResult = require('./src/GetRequest'),
 
 function handleResponse(response){
 	var record, i,
-		table = document.querySelectorAll('.record-table')[0];
+		table = document.querySelectorAll('.record-table')[0],
+		tBody = document.querySelectorAll('.record-table tbody')[0];
+	tBody.innerHTML = '';
 	if(response.length>0){
 		for(i=0; i<response.length; i++){
 			record = response[i];
-			layout(table, record, i);
+			layout(tBody, record, i);
 		}
 		table.className = 'record-table';
 	}	
@@ -38,7 +40,7 @@ addEvent(find,'click',onResultsHandler);
 function onResultsHandler(e) {
 	co(function *() {
 		var domainName = document.querySelectorAll('.domain')[0].value;
-		var name = endpoint + domainName.replace(/.*?:\/\//g, "");
+		var name = endpoint + domainName.replace(/(.*?:\/\/)?(www.)?/g, "");
 		var resp = yield getResult(name);
 		return resp;
 	}).then(handleResponse, handleError);
