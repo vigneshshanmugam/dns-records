@@ -1,4 +1,4 @@
-var RECORD_NAMES =['IPv4','IPv6','Canonical Name','Name Servers', 'Mail Exchange','Service', 'Start of authority'];
+var RECORD_NAMES =['IPv4','IPv6','Canonical Name','Name Servers', 'Mail Exchange','Service Record', 'Start of authority'];
 
 function createObjComponents(record, subTable, col){
 	var subComp, keyName, valName, r;
@@ -6,8 +6,8 @@ function createObjComponents(record, subTable, col){
 		if(record.hasOwnProperty(r)){
 			subComp = subTable.insertRow();
 			keyName = subComp.insertCell();
-			keyName.innerHTML = r;
 			keyName.setAttribute('class','sub-keys');
+			keyName.innerHTML = r;
 			valName = subComp.insertCell();
 			valName.innerHTML = record[r];
 		}
@@ -16,12 +16,24 @@ function createObjComponents(record, subTable, col){
 }
 
 function createArrayComponent(record, subTable, col){
-	var subComp, valName, r;
-
+	var subComp, keyName, valName, r, k, subRecord;
 	for(r = 0; r < record.length; r++){
 		subComp = subTable.insertRow();
-		valName = subComp.insertCell();
-		valName.innerHTML = record[r];
+		subRecord = record[r];
+		if(typeof subRecord === 'object'){
+			for(k in subRecord){
+				if(subRecord.hasOwnProperty(k)){
+					keyName = subComp.insertCell();
+					keyName.setAttribute('class','sub-keys');
+					keyName.innerHTML = k;
+					valName = subComp.insertCell();
+					valName.innerHTML = subRecord[k];
+				}
+			}	
+		}else{
+			valName = subComp.insertCell();
+			valName.innerHTML = subRecord;
+		}
 	}
 	col.appendChild(subTable);
 }
