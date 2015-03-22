@@ -198,10 +198,10 @@
 
 		col1.innerHTML = RECORD_NAMES[recordNo];
 		if (record) {
-			if (Object.prototype.toString.call(record) === "[object Object]") {
+			if (({}).toString.call(record) === "[object Object]") {
 				subTable.className = "sub-table";
 				createObjComponents(record, subTable, col2);
-			} else if (Object.prototype.toString.call(record) === "[object Array]") {
+			} else if (({}).toString.call(record) === "[object Array]") {
 				subTable.className = "sub-table";
 				createArrayComponent(record, subTable, col2);
 			} else {
